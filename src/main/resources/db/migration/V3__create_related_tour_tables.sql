@@ -26,11 +26,11 @@ CREATE TABLE IF NOT EXISTS "tour" (
     location VARCHAR(255) NOT NULL,
     number_of_people INTEGER NOT NULL,
     activity_date TIMESTAMP NOT NULL,
-    state VARCHAR(20) NOT NULL
+    status VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "tour_count" (
     id SERIAL PRIMARY KEY,
-    tour_id INTEGER UNIQUE NOT NULL REFERENCES "tour_company"(id),
+    tour_id INTEGER UNIQUE NOT NULL REFERENCES "tour"(id),
     amount INTEGER NOT NULL
 );

@@ -11,7 +11,7 @@ import com.example.gout_backend.tourcompany.model.TourCompany;
 @Table("tour")
 public record Tour(
     @Id Integer id,
-    AggregateReference<TourCompany, Integer> tourCompanyId, 
+    AggregateReference<TourCompany, Integer> tourCompanyId,
     String title,
     String description,
     String location,

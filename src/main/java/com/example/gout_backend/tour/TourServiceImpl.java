@@ -1,8 +1,9 @@
 package com.example.gout_backend.tour;
 
-import org.hibernate.validator.internal.util.logging.LoggerFactory;
-import org.slf4j.Logger;
+  import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +40,10 @@ public class TourServiceImpl implements TourService{
         var tourCompanyId = body.tourCompanyId();
         var tourCompany = tourCompanyRespository.findById(tourCompanyId)
             .orElseThrow(() -> new EntityNotFound(String.format("Tour Company Id: %s not found", tourCompanyId)));
-        AggregateReference<TourCompany, Integer> tourCompanyReference = AggregateReference.to(tourCompanyId.id());
+        AggregateReference<TourCompany, Integer> tourCompanyReference = AggregateReference.to(tourCompany.id());
         var tour = new Tour(
             null,
-            null,
+            tourCompanyReference,
             body.title(), 
             body.description(), 
             body.location(), 
@@ -58,14 +59,12 @@ public class TourServiceImpl implements TourService{
 
     @Override
     public Tour getTourById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTourById'");
+        return tourRepository.findById(id).orElseThrow(()-> new EntityNotFound(String.format("Tour id : %d not found", id)));
     }
 
     @Override
-    public Page<Tour> getPageTour() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPageTour'");
+    public Page<Tour> getPageTour(Pageable pageable) {
+        return tourRepository.findAll(pageable);
     }
 
 }

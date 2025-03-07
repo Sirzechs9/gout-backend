@@ -8,7 +8,6 @@ import org.springframework.data.relational.core.mapping.Table;
 public record TourCount(
     @Id Integer id,
     AggregateReference<Tour, Integer> tourId,
-    int amount
-) {
+    int amount) {
 
 }

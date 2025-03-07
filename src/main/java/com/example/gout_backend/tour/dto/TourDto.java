@@ -3,16 +3,15 @@ package com.example.gout_backend.tour.dto;
 import java.time.Instant;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record TourDto(
-    Integer tourCompanyId, 
+    @NotNull Integer tourCompanyId,
     @NotBlank String title,
     @NotBlank String description,
     @NotBlank String location,
-    int numberOfPeople,
-    @NotBlank Instant activityDate,
-    String status    
-
-) {
+    @NotNull Integer numberOfPeople,
+    @NotNull Instant activityDate,
+    String status) {
 
 }

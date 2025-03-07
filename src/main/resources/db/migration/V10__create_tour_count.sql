@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS "tour_count" (
+    id SERIAL PRIMARY KEY,
+    tour_id INTEGER UNIQUE NOT NULL REFERENCES "tour"(id),
+    amount INTEGER NOT NULL
+);
