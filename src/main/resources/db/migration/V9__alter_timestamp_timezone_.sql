@@ -18,3 +18,8 @@ ALTER COLUMN "transaction_date" TYPE TIMESTAMP WITH TIME ZONE;
 
 ALTER TABLE "tour"
 ALTER COLUMN "activity_date" TYPE TIMESTAMP WITH TIME ZONE;
+
+ALTER TABLE "tour_count"
+DROP CONSTRAINT "tour_count_tour_company_fkey",
+ADD CONSTRAINT "tour_count_tour_id_fkey"
+FOREIGN KEY (tour_id) REFERENCES "tour"(id);
