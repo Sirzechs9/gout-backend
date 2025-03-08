@@ -42,7 +42,7 @@ public class TourController {
     @GetMapping
     //Paination in spring Boot (Spring Data JDBC)
     public Page<Tour> getTours(
-        @RequestParam(required = true) int page,
+        @RequestParam(required = true) int page, // page number
         @RequestParam(required = true) int size,
         @RequestParam(required = true) String sortField,
         @RequestParam(required = true) String sortDirection
