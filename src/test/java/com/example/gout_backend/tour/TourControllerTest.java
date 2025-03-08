@@ -24,7 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.gout_backend.common.enumeration.TourStatus;
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tour.dto.TourDto;
 import com.example.gout_backend.tour.model.Tour;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -79,7 +79,7 @@ public class TourControllerTest {
     void whenGetTourByIdButNotFoundThenReturn404() throws Exception{
 
         when(tourService.getTourById(anyInt()))
-            .thenThrow(new EntityNotFound());
+            .thenThrow(new EntityNotFoundException());
         
         mockMvc.perform(
                 MockMvcRequestBuilders.get(String.format("/api/v1/tours/%d", 1)))

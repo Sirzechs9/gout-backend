@@ -8,7 +8,7 @@ public record User(
     @Id Integer id,
     String firstName,
     String lastName,
-    String phonenumber
+    String phoneNumber
 ) {
 
 }

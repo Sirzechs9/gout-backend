@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 
 @RestControllerAdvice
 public class ResponseAdviceHandler extends ResponseEntityExceptionHandler {
@@ -39,8 +39,8 @@ public class ResponseAdviceHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(detail);
     }
 
-    @ExceptionHandler(EntityNotFound.class)
-    protected ResponseEntity<Object> globalExceptionHandling(EntityNotFound e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> globalExceptionHandling(EntityNotFoundException e) {
         ProblemDetail detail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
                 e.getMessage());

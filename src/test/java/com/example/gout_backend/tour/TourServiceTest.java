@@ -23,7 +23,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 import com.example.gout_backend.common.enumeration.TourCompanyStatus;
 import com.example.gout_backend.common.enumeration.TourStatus;
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tour.dto.TourDto;
 import com.example.gout_backend.tour.model.Tour;
 import com.example.gout_backend.tour.model.TourCount;
@@ -108,8 +108,8 @@ public class TourServiceTest {
                                      TourStatus.PENDING.name());
 
         when(tourCompanyRespository.findById(anyInt()))
-            .thenThrow(new EntityNotFound(String.format("Tour Company Id: %s not found", 1)));
-        Assertions.assertThrows(EntityNotFound.class, () -> tourService.createTour(payload));
+            .thenThrow(new EntityNotFoundException(String.format("Tour Company Id: %s not found", 1)));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> tourService.createTour(payload));
     }
 
     @Test
@@ -143,8 +143,8 @@ public class TourServiceTest {
     @Test
     void whenGetTourByIdThenReturnNotFound(){
         when(tourRepository.findById(anyInt()))
-            .thenThrow(new EntityNotFound(String.format("Tour Company Id: %s not found", 1)));
-        Assertions.assertThrows(EntityNotFound.class, ()-> tourService.getTourById(1));
+            .thenThrow(new EntityNotFoundException(String.format("Tour Company Id: %s not found", 1)));
+        Assertions.assertThrows(EntityNotFoundException.class, ()-> tourService.getTourById(1));
         
     }
 

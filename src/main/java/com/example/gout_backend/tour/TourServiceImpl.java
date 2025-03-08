@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.gout_backend.common.enumeration.TourStatus;
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tour.dto.TourDto;
 import com.example.gout_backend.tour.model.Tour;
 import com.example.gout_backend.tour.model.TourCount;
@@ -39,7 +39,7 @@ public class TourServiceImpl implements TourService{
     public Tour createTour(TourDto body) {
         var tourCompanyId = body.tourCompanyId();
         var tourCompany = tourCompanyRespository.findById(tourCompanyId)
-            .orElseThrow(() -> new EntityNotFound(String.format("Tour Company Id: %s not found", tourCompanyId)));
+            .orElseThrow(() -> new EntityNotFoundException(String.format("Tour Company Id: %s not found", tourCompanyId)));
         AggregateReference<TourCompany, Integer> tourCompanyReference = AggregateReference.to(tourCompany.id());
         var tour = new Tour(
             null,
@@ -59,7 +59,7 @@ public class TourServiceImpl implements TourService{
 
     @Override
     public Tour getTourById(int id) {
-        return tourRepository.findById(id).orElseThrow(()-> new EntityNotFound(String.format("Tour id : %d not found", id)));
+        return tourRepository.findById(id).orElseThrow(()-> new EntityNotFoundException(String.format("Tour id : %d not found", id)));
     }
 
     @Override

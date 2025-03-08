@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.example.gout_backend.common.enumeration.TourCompanyStatus;
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tourcompany.dto.RegisterTourCompanyDto;
 import com.example.gout_backend.tourcompany.model.TourCompany;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +91,7 @@ class TourCompanyControllerTest {
     @Test
     void whenApprovedTourCompanyButNotFound() throws Exception{
         when(tourCompanyService.approvedTourCompany(anyInt()))
-            .thenThrow(new EntityNotFound());
+            .thenThrow(new EntityNotFoundException());
         mockMvc.perform(
 
             MockMvcRequestBuilders.post(String.format("/api/v1/tour-companies/%d/approved", 1)))

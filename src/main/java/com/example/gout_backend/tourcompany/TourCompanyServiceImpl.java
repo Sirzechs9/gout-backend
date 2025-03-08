@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.gout_backend.common.enumeration.TourCompanyStatus;
-import com.example.gout_backend.common.exception.EntityNotFound;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tourcompany.dto.RegisterTourCompanyDto;
 import com.example.gout_backend.tourcompany.model.TourCompany;
 import com.example.gout_backend.tourcompany.model.TourCompanyLogin;
@@ -76,7 +76,7 @@ public class TourCompanyServiceImpl implements TourCompanyService{
     @Override
     public TourCompany approvedTourCompany(Integer id) {
         var tourCompany = tourCompanyRespository.findById(id).
-            orElseThrow(() -> new EntityNotFound(String.format("Tour Company Id: %s not found", id)));
+            orElseThrow(() -> new EntityNotFoundException(String.format("Tour Company Id: %s not found", id)));
         tourCompany = new TourCompany(id, tourCompany.name(), TourCompanyStatus.APPROVED.name());
         var updatedTourCompany = tourCompanyRespository.save(tourCompany);
         createCompanyWallet(id, updatedTourCompany);

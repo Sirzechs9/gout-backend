@@ -1,7 +1,10 @@
 package com.example.gout_backend.auth;
 
-import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Table;
+
+import com.example.gout_backend.user.model.User;
 
 @Table("user_login")
 public record UserLogin(
