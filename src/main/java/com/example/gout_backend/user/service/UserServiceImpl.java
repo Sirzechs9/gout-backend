@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.gout_backend.auth.AuthService;
+import com.example.gout_backend.auth.service.AuthService;
 import com.example.gout_backend.common.enumeration.RoleEnum;
 import com.example.gout_backend.common.exception.CredentialExistsException;
 import com.example.gout_backend.common.exception.EntityNotFoundException;
