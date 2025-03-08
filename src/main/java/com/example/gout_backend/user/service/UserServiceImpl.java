@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.gout_backend.auth.AuthService;
+import com.example.gout_backend.common.enumeration.RoleEnum;
 import com.example.gout_backend.common.exception.CredentialExistsException;
 import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.user.dto.UserCreationDto;
@@ -24,11 +25,13 @@ public class UserServiceImpl implements  UserService{
     private final UserRepositoy userRepositoy;
     private final WalletService walletService;
     private final AuthService authService;
+    private final RoleService roleService;
 
-    public UserServiceImpl(AuthService authService, UserRepositoy userRepositoy, WalletService walletService){
+    public UserServiceImpl(AuthService authService, UserRepositoy userRepositoy, WalletService walletService, RoleService roleService){
         this.authService = authService;
         this.userRepositoy = userRepositoy;
         this.walletService = walletService;
+        this.roleService = roleService;
     }
 
     //Get user Dto by id 
@@ -59,7 +62,8 @@ public class UserServiceImpl implements  UserService{
         var newUser = userRepositoy.save(prepareUser);
 
         // 3. binding role
-
+        var userRole = roleService.bindingNewUser(newUser.id(), RoleEnum.CONSUMER);
+        
         // 4. create credential
         var userCredential = authService.createConsumerCredential(newUser.id(), body.email(), body.password());
 

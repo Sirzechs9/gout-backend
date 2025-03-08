@@ -2,9 +2,13 @@ package com.example.gout_backend.user.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
+import com.example.gout_backend.common.enumeration.RoleEnum;
 import com.example.gout_backend.user.model.Role;
+import com.example.gout_backend.user.model.User;
+import com.example.gout_backend.user.model.UserRole;
 import com.example.gout_backend.user.repository.RoleRepository;
 import com.example.gout_backend.user.repository.UserRoleRepository;
 
@@ -27,4 +31,11 @@ public class RoleService {
         return availableRoles;
     }
     
+    public UserRole bindingNewUser(int id, RoleEnum role){
+        AggregateReference<User, Integer> userId = AggregateReference.to(id);
+        AggregateReference<Role, Integer> roleId = AggregateReference.to(role.getId());
+        var prepareRole = new UserRole(null, userId, roleId);
+        return userRoleRepository.save(prepareRole);
+    }
+
 }
