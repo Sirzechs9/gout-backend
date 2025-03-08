@@ -22,10 +22,10 @@ import com.example.gout_backend.common.exception.EntityNotFound;
 import com.example.gout_backend.tourcompany.dto.RegisterTourCompanyDto;
 import com.example.gout_backend.tourcompany.model.TourCompany;
 import com.example.gout_backend.tourcompany.model.TourCompanyLogin;
-import com.example.gout_backend.tourcompany.model.TourCompanyWallet;
 import com.example.gout_backend.tourcompany.repository.TourCompanyLoginRepository;
 import com.example.gout_backend.tourcompany.repository.TourCompanyRespository;
-import com.example.gout_backend.tourcompany.repository.TourCompanyWalletRepository;
+import com.example.gout_backend.wallet.model.TourCompanyWallet;
+import com.example.gout_backend.wallet.repository.TourCompanyWalletRepository;
 
 @ExtendWith(MockitoExtension.class)
 class TourCompanyServiceTest {
