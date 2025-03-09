@@ -63,8 +63,8 @@ public class SecurityConfig {
         http
 
             .authorizeHttpRequests(authorize -> authorize 
-                .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name()))
-                .anyRequest().permitAll()
+                .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name())
+                .anyRequest().permitAll())
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
@@ -108,14 +108,14 @@ public class SecurityConfig {
     }
     @Bean
     public JwtEncoder jwtEncoder(RSAKeyProperties rsaInstance) {
-        JWK jwk = new RSAKey.Builder(rsaInstance.publicKey).privateKey(rsaInstance.privateKey).build();
+        JWK jwk = new RSAKey.Builder(rsaInstance.publicKey()).privateKey(rsaInstance.privateKey()).build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
 
     @Bean
     public JwtDecoder jwtDecoder(RSAKeyProperties rsaInstance) {
-        return NimbusJwtDecoder.withPublicKey(rsaInstance.publicKey).build();
+        return NimbusJwtDecoder.withPublicKey(rsaInstance.publicKey()).build();
     }
 
     @Bean

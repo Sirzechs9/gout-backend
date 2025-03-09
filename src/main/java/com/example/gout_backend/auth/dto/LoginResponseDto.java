@@ -4,7 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginResponseDto(
    Integer userId,
-   String token
+   String tokenType,
+   String accessToken,
+   String refreshToken
 ) {
 
 }

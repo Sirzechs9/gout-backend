@@ -14,7 +14,6 @@ import com.example.gout_backend.user.model.Role;
 import com.example.gout_backend.user.repository.UserLoginRepository;
 import com.example.gout_backend.user.repository.UserRoleRepository;
 
-import jakarta.validation.constraints.Email;
 
 @Primary 
 @Service
@@ -41,7 +40,7 @@ public class CustomUserDetailService implements UserDetailsService{
 
         return new AuthenticatedUser(userId, userLogin.email(), userLogin.password() , role);
 
-     
+    
         
     }
 
