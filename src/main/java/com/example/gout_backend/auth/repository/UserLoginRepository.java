@@ -1,4 +1,4 @@
-package com.example.gout_backend.user.repository;
+package com.example.gout_backend.auth.repository;
 
 import java.util.Optional;
 

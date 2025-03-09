@@ -4,9 +4,10 @@ import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
 
-import com.example.gout_backend.auth.dto.LogOutDto;
 import com.example.gout_backend.auth.dto.LoginRequestDto;
 import com.example.gout_backend.auth.dto.LoginResponseDto;
+import com.example.gout_backend.auth.dto.LogoutDto;
+import com.example.gout_backend.auth.dto.RefreshTokenDto;
 import com.example.gout_backend.auth.model.UserLogin;
 
 public interface  AuthService {
@@ -21,7 +22,10 @@ public interface  AuthService {
 
     LoginResponseDto login(LoginRequestDto body);
 
+    LoginResponseDto issueNewRefreshToken(RefreshTokenDto body);
+
     void logout(Authentication authentication);
 
-    void logout(LogOutDto logOutDto);
+    void logout(LogoutDto logoutDto);
 }
+

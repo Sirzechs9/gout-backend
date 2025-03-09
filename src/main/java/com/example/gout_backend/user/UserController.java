@@ -4,6 +4,10 @@ import java.net.URI;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.gout_backend.user.dto.UserCreationDto;
@@ -37,6 +42,27 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         var result = userService.getUserById(id);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping
+    //Paination in spring Boot (Spring Data JDBC)
+    public Page<User> getUsers(
+        @RequestParam(required = false) String keyword, //some time can search all
+        @RequestParam(required = true) int page, // page number
+        @RequestParam(required = true) int size,
+        @RequestParam(required = true) String sortField,
+        @RequestParam(required = true) String sortDirection
+    ) {
+        //1-100 tours
+        //Size:20 Page:0 -> [1,20]  Page:1 ->[21,40]  Page:2 ->[41,60]..
+        //Page - 2
+        //Sort ASC, DESC 
+        
+        Sort sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return userService.getUsersByFirstNameKeyword(keyword, pageable);
+
+        
     }
 
     @PostMapping

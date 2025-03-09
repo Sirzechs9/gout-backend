@@ -59,6 +59,7 @@ public class TourController {
     }
 
     @GetMapping("/{id}")
+    // @PreAuthorize("hasRole('ROLE_COMPANY') and hasRole('....')")
     public ResponseEntity<Tour> getTourById(@PathVariable int id) {
         logger.info("Get tourId: {}", id);
         return ResponseEntity.ok(tourService.getTourById(id));

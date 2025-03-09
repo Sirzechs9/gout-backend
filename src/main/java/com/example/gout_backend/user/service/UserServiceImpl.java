@@ -2,6 +2,8 @@ package com.example.gout_backend.user.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +28,14 @@ public class UserServiceImpl implements  UserService{
     private final WalletService walletService;
     private final AuthService authService;
     private final RoleService roleService;
+    private final UserRoleRepository userRoleRepository;
 
-    public UserServiceImpl(AuthService authService, UserRepositoy userRepositoy, WalletService walletService, RoleService roleService){
+    public UserServiceImpl(AuthService authService, RoleService roleService, UserRepositoy userRepositoy, UserRoleRepository userRoleRepository, WalletService walletService) {
         this.authService = authService;
-        this.userRepositoy = userRepositoy;
-        this.walletService = walletService;
         this.roleService = roleService;
+        this.userRepositoy = userRepositoy;
+        this.userRoleRepository = userRoleRepository;
+        this.walletService = walletService;
     }
 
     //Get user Dto by id 
@@ -99,10 +103,20 @@ public class UserServiceImpl implements  UserService{
         logger.info("delete credential for user id {}",id);
         walletService.deleteWalletByUserId(user.id());
         logger.info("delete wallet for user id {}",id);
+        roleService.deleteRoleByUserId(id);
+        logger.info("delete role for user id {}",id);
         userRepositoy.delete(user);
         
         return true;
     }
+
+    @Override
+    public Page<User> getUsersByFirstNameKeyword(String keyword, Pageable pageable) {
+        return userRepositoy.findByFirstNameContaining(keyword, pageable);
+    }
+
+
+
 
 
 }

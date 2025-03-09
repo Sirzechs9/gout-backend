@@ -1,8 +1,8 @@
 package com.example.gout_backend.auth.dto;
 
-public record LogOutDto(
+public record LogoutDto(
     String sub,
-    String role
+    String roles
 ) {
 
 }

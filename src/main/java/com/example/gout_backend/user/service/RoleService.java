@@ -6,6 +6,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 import com.example.gout_backend.common.enumeration.RoleEnum;
+import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.user.model.Role;
 import com.example.gout_backend.user.model.User;
 import com.example.gout_backend.user.model.UserRole;
@@ -36,6 +37,12 @@ public class RoleService {
         AggregateReference<Role, Integer> roleId = AggregateReference.to(role.getId());
         var prepareRole = new UserRole(null, userId, roleId);
         return userRoleRepository.save(prepareRole);
+    }
+
+        public void deleteRoleByUserId(int userId){
+        var userRole = userRoleRepository.findOneByUserId(AggregateReference.to(userId))
+                        .orElseThrow(() -> new EntityNotFoundException(String.format("Role for user %d not found", userId)));
+        userRoleRepository.delete(userRole);
     }
 
 }

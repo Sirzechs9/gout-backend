@@ -8,4 +8,5 @@ import com.example.gout_backend.tourcompany.model.TourCompany;
 
 public interface TourCompanyRespository extends CrudRepository<TourCompany, Integer>{
 
+    
 }

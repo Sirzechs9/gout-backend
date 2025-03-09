@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.session.SessionConcurrencyDsl;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,9 +43,6 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import jakarta.validation.Path;
-import jakarta.websocket.Session;
-
 
 @Configuration  // make spring can find this class as configuration
 @EnableWebSecurity // mack spring know this is for security
@@ -62,9 +59,29 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
 
-            .authorizeHttpRequests(authorize -> authorize 
-                .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name())
-                .anyRequest().permitAll())
+            .authorizeHttpRequests(authorize -> authorize
+                 // Actuator
+                 .requestMatchers("/actuator/health").permitAll()
+                 .requestMatchers("/actuator/metrics").permitAll()
+                 // Auth
+                 .requestMatchers("/api/v1/auth/login").permitAll()
+                 .requestMatchers("/api/v1/auth/refresh").permitAll()
+                 // Tour Company
+                 .requestMatchers(HttpMethod.POST, "/api/v1/tour-companies").permitAll()
+                 .requestMatchers(HttpMethod.POST, "/api/v1/tour-companies/{id:\\d+}/approve")
+                    .hasRole(RoleEnum.ADMIN.name())
+                 // Tour 
+                 .requestMatchers(HttpMethod.GET, "/api/v1/tours").permitAll()
+                 .requestMatchers(HttpMethod.GET, "/api/v1/tours/{id:\\d+}").permitAll()
+                 .requestMatchers("/api/v1/tours").hasRole(RoleEnum.COMPANY.name())
+                 // User
+                 .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
+                 .requestMatchers("/api/v1/users/**").hasRole(RoleEnum.ADMIN.name())
+                 // User self-managed
+                 .requestMatchers("/api/v1/me").hasRole(RoleEnum.CONSUMER.name())
+                 // Administrator purpose
+                 .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name())
+                 .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)

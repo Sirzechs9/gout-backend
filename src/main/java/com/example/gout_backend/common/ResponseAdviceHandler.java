@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.gout_backend.common.exception.EntityNotFoundException;
+import com.example.gout_backend.common.exception.RefreshTokenExpiredException;
 
 @RestControllerAdvice
 public class ResponseAdviceHandler extends ResponseEntityExceptionHandler {
@@ -62,4 +63,16 @@ public class ResponseAdviceHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.internalServerError().body(detail);
              
     }
+
+
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    protected ResponseEntity<Object> globalExceptionHandling(RefreshTokenExpiredException e) {
+        ProblemDetail detail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                e.getMessage());
+        logger.info("Refresh token expired {}", detail);
+        return ResponseEntity.notFound().build();
+    }
+
+    
 }
