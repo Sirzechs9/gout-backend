@@ -11,4 +11,6 @@ import com.example.gout_backend.wallet.model.UserWallet;
 public interface UserWalletRepository extends CrudRepository<UserWallet, Integer>{
 
     Optional<UserWallet> findOneByUserId(AggregateReference<User, Integer> userId);
+
+    
 }
