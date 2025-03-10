@@ -10,10 +10,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -48,10 +47,14 @@ import com.nimbusds.jose.proc.SecurityContext;
 @EnableWebSecurity // mack spring know this is for security
 public class SecurityConfig {
 
-    private final ResourceLoader resourceLoader;
+   private final String privateKeyBase64;
+    private final String publicKeyBase64;
 
-    public SecurityConfig(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+    public SecurityConfig(
+            @Value("${oauth.private-key}") String privateKeyBase64,
+            @Value("${oauth.public-key}") String publicKeyBase64) {
+        this.privateKeyBase64 = privateKeyBase64;
+        this.publicKeyBase64 = publicKeyBase64;
     }
 
 
@@ -80,10 +83,13 @@ public class SecurityConfig {
                  //Walet
                  .requestMatchers(HttpMethod.GET, "/api/v1/wallets/me").hasRole(RoleEnum.CONSUMER.name())
                  .requestMatchers(HttpMethod.POST, "/api/v1/wallets/topup").hasRole(RoleEnum.CONSUMER.name())
+                 // Payment
+                 .requestMatchers(HttpMethod.GET, "/api/v1/payment/**").hasRole(RoleEnum.CONSUMER.name())
+                 // Booking
+                 .requestMatchers(HttpMethod.POST, "/api/v1/booking/**").hasRole(RoleEnum.CONSUMER.name())
                  // User self-managed
-                 .requestMatchers("/api/v1/me").hasRole(RoleEnum.CONSUMER.name())
-                 // Administrator purpose
-                 .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name())
+    .requestMatchers("/api/v1/me").hasRole(RoleEnum.CONSUMER.name())
+                 // Administrator purpose             .requestMatchers("/api/v1/admin/**").hasRole(RoleEnum.ADMIN.name())
                  .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)
             .cors(AbstractHttpConfigurer::disable)
@@ -140,18 +146,16 @@ public class SecurityConfig {
 
     @Bean
     public RSAKeyProperties rsaInstance() throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        Resource privateKeyPkcs8 = resourceLoader.getResource("classPath:private_key_pkcs8.pem");
-        String privateKeyContent = new String(privateKeyPkcs8.getContentAsByteArray());
-        Resource publicKey = resourceLoader.getResource("classPath:public_key.pem");
-        String publicKeyContent = new String(publicKey.getContentAsByteArray());
-
-        privateKeyContent = privateKeyContent.replaceAll("\\n", "")
+        String privateKeyContent = privateKeyBase64
+                .replaceAll("\\n", "")
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "");
-        publicKeyContent = publicKeyContent.replaceAll("\\n", "")
+        
+        String publicKeyContent = publicKeyBase64
+                .replaceAll("\\n", "")
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "");
-
+    
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PKCS8EncodedKeySpec keySpecPKCS8 = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
         PrivateKey privKey = kf.generatePrivate(keySpecPKCS8);

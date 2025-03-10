@@ -27,6 +27,7 @@ import com.example.gout_backend.common.enumeration.TourStatus;
 import com.example.gout_backend.common.exception.EntityNotFoundException;
 import com.example.gout_backend.tour.dto.TourDto;
 import com.example.gout_backend.tour.model.Tour;
+import com.example.gout_backend.tour.service.TourService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.exception.InternalServerErrorException;
 

@@ -1,4 +1,4 @@
-package com.example.gout_backend.tour;
+package com.example.gout_backend.tour.service;
 
   import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

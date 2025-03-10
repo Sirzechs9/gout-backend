@@ -81,7 +81,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean>  deleteUser(@PathVariable Integer id ) {
         userService.deleteUserById(id);
-        logger.info("UserId {} has benn deleted", id);
+        logger.info("UserId {} has been deleted", id);
         return ResponseEntity.ok(true);
     }
 }

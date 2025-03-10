@@ -29,6 +29,7 @@ import com.example.gout_backend.tour.model.Tour;
 import com.example.gout_backend.tour.model.TourCount;
 import com.example.gout_backend.tour.repository.TourCountRepository;
 import com.example.gout_backend.tour.repository.TourRepository;
+import com.example.gout_backend.tour.service.TourServiceImpl;
 import com.example.gout_backend.tourcompany.model.TourCompany;
 import com.example.gout_backend.tourcompany.repository.TourCompanyRespository;
 

@@ -1,4 +1,4 @@
-package com.example.gout_backend.wallet.model;
+package com.example.gout_backend.payment;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -12,14 +12,13 @@ import com.example.gout_backend.user.model.User;
 
 @Table("transaction")
 public record Transaction(
-    @Id Integer id,
-    AggregateReference<User, Integer> userId,
-    AggregateReference<TourCompany, Integer> tourCompanyId,
-    Instant transactionDate,
-    BigDecimal amount,
-    String type,
-    String idempotentKey
-    
-) {
+        @Id Integer id,
+        AggregateReference<User, Integer> userId,
+        AggregateReference<TourCompany, Integer> tourCompanyId,
+        Instant transactionDate,
+        BigDecimal amount,
+        String type,
+        String idempotentKey,
+        Integer bookingId) {
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.gout_backend.tour.dto.TourDto;
 import com.example.gout_backend.tour.model.Tour;
+import com.example.gout_backend.tour.service.TourService;
 
 @RestController
 @RequestMapping("/api/v1/tours")
